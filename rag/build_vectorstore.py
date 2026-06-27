@@ -40,13 +40,13 @@ def create_chunks(
 
     return chunks
 
-def get_embedding(text):
+def get_embedding(chunk):
 
     response = client.models.embed_content(
 
         model="text-embedding-004",
 
-        contents=text
+        contents=chunk
 
     )
 
@@ -54,3 +54,25 @@ def get_embedding(text):
 
     return embedding
 
+def build_faiss(chunks):
+
+    embeddings = []
+
+    for chunk in chunks:
+
+        embedding = get_embedding(chunk)
+
+        embeddings.append(embedding)
+
+    embeddings = np.array(
+        embeddings,
+        dtype=np.float32
+    )
+
+    dimension = embeddings.shape[1]
+
+    index = faiss.IndexFlatL2(dimension)
+
+    index.add(embeddings)
+
+    return index
