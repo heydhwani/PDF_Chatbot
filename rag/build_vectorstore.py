@@ -26,17 +26,31 @@ def extract_text(pdf_path):
 
     return text
 
-def create_chunks(text):
-
+def create_chunks(
+    text,
+    chunk_size=1000,
+    chunk_overlap=200
+):
     text_splitter = RecursiveCharacterTextSplitter(
-
-        chunk_size=1000,
-
-        chunk_overlap=200
-
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap
     )
 
     chunks = text_splitter.split_text(text)
 
     return chunks
+
+def get_embedding(text):
+
+    response = client.models.embed_content(
+
+        model="text-embedding-004",
+
+        contents=text
+
+    )
+
+    embedding = response.embeddings[0].values
+
+    return embedding
 
