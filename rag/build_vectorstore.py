@@ -108,3 +108,17 @@ def save_vectorstore(index, chunks):
             chunks,
             file
         )
+
+#calling functions
+
+def create_vectorstore(pdf_path):
+
+    text = extract_text(pdf_path)
+
+    chunks = create_chunks(text)
+
+    index = build_faiss(chunks)
+
+    save_vectorstore(index, chunks)
+
+    print("Vector Store Created Successfully")
