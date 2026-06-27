@@ -121,4 +121,4 @@ def create_vectorstore(pdf_path):
 
     save_vectorstore(index, chunks)
 
-    print("Vector Store Created Successfully")
+    return "Vector Store Created Successfully"
