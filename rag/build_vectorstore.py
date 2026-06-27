@@ -11,6 +11,9 @@ from langchain_text_splitters import (
 
 from api import client
 
+
+#READING PDF
+
 def extract_text(pdf_path):
 
     reader = PdfReader(pdf_path)
@@ -25,6 +28,9 @@ def extract_text(pdf_path):
             text += page_text
 
     return text
+
+
+#CREATING CHUNKS
 
 def create_chunks(
     text,
@@ -54,6 +60,8 @@ def get_embedding(chunk):
 
     return embedding
 
+#FAISS DATABASE
+
 def build_faiss(chunks):
 
     embeddings = []
@@ -76,3 +84,27 @@ def build_faiss(chunks):
     index.add(embeddings)
 
     return index
+
+#saving database
+
+def save_vectorstore(index, chunks):
+
+    os.makedirs(
+        "faiss_index",
+        exist_ok=True
+    )
+
+    faiss.write_index(
+        index,
+        "faiss_index/index.faiss"
+    )
+
+    with open(
+        "faiss_index/chunks.pkl",
+        "wb"
+    ) as file:
+
+        pickle.dump(
+            chunks,
+            file
+        )
