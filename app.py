@@ -1,9 +1,12 @@
-import os
-from dotenv import load_dotenv
+from rag.build_vectorstore import create_vectorstore
 
-load_dotenv()
+from prompts.pdf_prompt import generate_answer
 
-print(os.getenv("GOOGLE_API_KEY"))
 
-message = create_vectorstore(pdf_path)
-print(message)
+def chat_with_pdf(pdf_path, question):
+
+    create_vectorstore(pdf_path)
+
+    answer = generate_answer(question)
+
+    return answer
