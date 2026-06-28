@@ -27,7 +27,7 @@ def question_embedding(question):
 
     response = client.models.embed_content(
 
-        model="text-embedding-004",
+        model="text-embedding-001",
 
         contents=question
 

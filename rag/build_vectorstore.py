@@ -50,7 +50,7 @@ def get_embedding(chunk):
 
     response = client.models.embed_content(
 
-        model="text-embedding-004",
+        model="text-embedding-001",
 
         contents=chunk
 
