@@ -35,28 +35,41 @@ def question_embedding(question):
 
     embedding = response.embeddings[0].values
 
-    return np.array(
+    question_vector = np.array(
         [embedding],
         dtype=np.float32
     )
 
+    faiss.normalize_L2(question_vector)
+
+    return question_vector
 
 
-def retrieve_context(question, k=5):
+def retrieve_context(question, k=11):
 
     index, chunks = load_vectorstore()
 
     question_vector = question_embedding(question)
 
     distances, indices = index.search(
-        question_vector,
-        k
-    )
+    question_vector,
+    k
+)
+
+    print("=" * 80)
+    print("Indices:", indices)
+    print("Scores:", distances)
 
     context = []
 
     for i in indices[0]:
 
+        print("\n----------------------")
+        print(f"Chunk Index: {i}")
+        print(chunks[i])
+
         context.append(chunks[i])
+
+    print("=" * 80)
 
     return "\n\n".join(context)

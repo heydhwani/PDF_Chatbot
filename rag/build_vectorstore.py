@@ -73,13 +73,16 @@ def build_faiss(chunks):
         embeddings.append(embedding)
 
     embeddings = np.array(
-        embeddings,
-        dtype=np.float32
-    )
+    embeddings,
+    dtype=np.float32
+)
+
+    # Normalize embeddings
+    faiss.normalize_L2(embeddings)
 
     dimension = embeddings.shape[1]
 
-    index = faiss.IndexFlatL2(dimension)
+    index = faiss.IndexFlatIP(dimension)
 
     index.add(embeddings)
 
@@ -115,7 +118,21 @@ def create_vectorstore(pdf_path):
 
     text = extract_text(pdf_path)
 
+    print("\n" + "=" * 100)
+    print("FULL TEXT (FIRST 1000 CHARACTERS)\n")
+    print(text[:1000])
+    print("=" * 100)
+
     chunks = create_chunks(text)
+
+    print("\nTOTAL CHUNKS :", len(chunks))
+
+    for i, chunk in enumerate(chunks):
+
+        print("\n" + "=" * 100)
+        print(f"CHUNK {i}")
+        print("=" * 100)
+        print(chunk)
 
     index = build_faiss(chunks)
 
