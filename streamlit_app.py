@@ -11,8 +11,8 @@ st.title("📄 PDF Chatbot")
 
 
 # Session State
-if "database_created" not in st.session_state:
-    st.session_state.database_created = False
+if "current_pdf" not in st.session_state:
+    st.session_state.current_pdf = ""
 
 
 # Upload PDF
@@ -24,7 +24,7 @@ uploaded_file = st.file_uploader(
 
 if uploaded_file is not None:
 
-    # Create folder if not exists
+    # Create folder if it doesn't exist
     os.makedirs("PDF_documents", exist_ok=True)
 
     # Save uploaded PDF
@@ -37,30 +37,37 @@ if uploaded_file is not None:
         file.write(uploaded_file.getbuffer())
 
 
-    # Create Vector Store only once
-    if not st.session_state.database_created:
+    # Create Vector Store only if a new PDF is uploaded
+    if uploaded_file.name != st.session_state.current_pdf:
 
-        create_vectorstore(pdf_path)
+        with st.spinner("Processing PDF..."):
 
-        st.session_state.database_created = True
+            create_vectorstore(pdf_path)
 
-        st.success("PDF Processed Successfully ✅")
+        st.session_state.current_pdf = uploaded_file.name
+
+        st.success("PDF processed successfully ✅")
 
 
     # Question Input
-    question = st.text_input("Ask your question")
+    question = st.text_input(
+        "Ask a question"
+    )
 
 
-    # Generate Answer
+    # Get Answer
     if st.button("Get Answer"):
 
         if question.strip() == "":
+
             st.warning("Please enter a question.")
 
         else:
 
-            answer = generate_answer(question)
+            with st.spinner("Generating Answer..."):
 
-            st.write("### Answer")
+                answer = generate_answer(question)
+
+            st.subheader("Answer")
 
             st.write(answer)
