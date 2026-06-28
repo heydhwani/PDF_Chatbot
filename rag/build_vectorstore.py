@@ -34,8 +34,8 @@ def extract_text(pdf_path):
 
 def create_chunks(
     text,
-    chunk_size=1000,
-    chunk_overlap=200
+    chunk_size=500,
+    chunk_overlap=100
 ):
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size,
@@ -50,7 +50,7 @@ def get_embedding(chunk):
 
     response = client.models.embed_content(
 
-        model="text-embedding-001",
+        model="gemini-embedding-001",
 
         contents=chunk
 

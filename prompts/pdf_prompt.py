@@ -7,13 +7,15 @@ def generate_answer(question):
     context = retrieve_context(question)
 
     prompt = f"""
-You are a helpful PDF Chatbot.
 
-Rules:
-1. Answer ONLY using the given context.
-2. Do not use outside knowledge.
-3. If the answer is not available in the context, reply:
-   "I couldn't find the answer in the uploaded PDF."
+You are a PDF assistant.
+
+Answer ONLY from the retrieved context.
+
+If the answer is present in the context,
+answer it exactly.
+
+Do not guess.
 
 Context:
 {context}
@@ -25,7 +27,7 @@ Answer:
 """
 
     response = client.models.generate_content(
-        model="gemini-2.0-flash-lite",
+        model="gemini-flash-lite-latest",
         contents=prompt
     )
 

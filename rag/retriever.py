@@ -27,7 +27,7 @@ def question_embedding(question):
 
     response = client.models.embed_content(
 
-        model="text-embedding-001",
+        model="gemini-embedding-001",
 
         contents=question
 
@@ -42,7 +42,7 @@ def question_embedding(question):
 
 
 
-def retrieve_context(question, k=3):
+def retrieve_context(question, k=5):
 
     index, chunks = load_vectorstore()
 

@@ -1,8 +1,8 @@
 from api import client
 
-response = client.models.embed_content(
-    model="gemini-embedding-001",
-    contents="Hello World"
+response = client.models.generate_content(
+    model="gemini-2.5-flash",
+    contents="Hello"
 )
 
-print(response)
+print(response.text)
